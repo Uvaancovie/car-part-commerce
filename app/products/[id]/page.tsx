@@ -1,14 +1,19 @@
 // app/products/[id]/page.tsx
 import { notFound } from "next/navigation";
-import products from "@/data/products.json";
+import products from "@/data/products.json"; // Assuming products.json is correctly located
 import Image from "next/image";
 import Link from "next/link";
 
+// Predefine paths for each product page at build time
+export function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id.toString(),
+  }));
+}
+
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  // Access `params.id` directly without async or await
   const product = products.find((p) => p.id === parseInt(params.id, 10));
 
-  // If the product is not found, render a 404 page
   if (!product) return notFound();
 
   return (

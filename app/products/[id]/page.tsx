@@ -1,18 +1,14 @@
 // app/products/[id]/page.tsx
 import { notFound } from "next/navigation";
-import products from "@/data/products.json"; // Assuming products.json is correctly located
+import products from "@/data/products.json";
 import Image from "next/image";
 import Link from "next/link";
 
-// Predefine paths for each product page at build time
-export function generateStaticParams() {
-  return products.map((product) => ({
-    id: product.id.toString(),
-  }));
-}
+type Params = { id: string };
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = products.find((p) => p.id === parseInt(params.id, 10));
+export default function ProductDetailPage({ params }: { params: Params }) {
+  // Explicitly cast params to remove any Promise-related type inference
+  const product = products.find((p) => p.id === parseInt((params as Params).id, 10));
 
   if (!product) return notFound();
 

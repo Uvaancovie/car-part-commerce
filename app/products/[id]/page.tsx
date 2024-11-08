@@ -4,7 +4,14 @@ import products from "../../../data/products.json";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+// Define the expected props type for params
+type ProductDetailPageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   // Find the product based on the ID from the URL
   const product = products.find((p) => p.id === Number(params.id));
 

@@ -4,16 +4,8 @@ import products from "../../../data/products.json";
 import Image from "next/image";
 import Link from "next/link";
 
-// Define the expected props type for params
-type ProductDetailPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-// Since we're using a server component, no need for "use client" or hooks
-export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  // Convert `params.id` to a number for matching the product ID
+export default function ProductDetailPage({ params }: { params: { id: string } }) {
+  // Convert `params.id` to a number to match product IDs in JSON
   const product = products.find((p) => p.id === Number(params.id));
 
   // If the product is not found, render a 404 page

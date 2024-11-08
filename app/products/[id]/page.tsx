@@ -4,22 +4,24 @@ import products from "@/data/products.json";
 import Image from "next/image";
 import Link from "next/link";
 
-// This function statically generates routes for each product at build time
+// Generate static paths for all products
 export async function generateStaticParams() {
   return products.map((product) => ({
     id: product.id.toString(),
   }));
 }
 
-type ProductDetailPageProps = {
-  params: { id: string };
-};
+// Server component for product detail
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params; // Await params if it's a Promise
 
-export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  // Fetch product data based on params.id
-  const product = products.find((p) => p.id === parseInt(params.id, 10));
+  const product = products.find((p) => p.id === parseInt(id, 10));
 
-  // If the product is not found, return a 404 page
+  // Show 404 page if product not found
   if (!product) return notFound();
 
   return (

@@ -1,47 +1,35 @@
-// app/products/[id]/page.tsx
-import { notFound } from "next/navigation";
-import products from "../../data/products.json" // Ensure this path is correct
-import Image from "next/image";
+// app/products/page.tsx
+import products from "@/data/products.json";
 import Link from "next/link";
+import Image from "next/image";
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  // Convert `params.id` to a number to match the ID in `products.json`
-  const product = products.find((p) => p.id === parseInt(params.id, 10));
-
-  // If the product is not found, render a 404 page
-  if (!product) return notFound();
-
+export default function ProductsPage() {
   return (
-    <div className="max-w-4xl mx-auto py-16 px-6">
-      <div className="flex flex-col md:flex-row md:space-x-6">
-        <Image
-          src={product.image}
-          alt={product.name}
-          width={400}
-          height={300}
-          className="w-full h-auto mb-6 rounded-md"
-        />
+    <div className="max-w-7xl mx-auto py-16 px-6">
+      <h2 className="text-4xl font-bold text-blue-600 text-center mb-8">Our Products</h2>
 
-        {/* Product Details */}
-        <div className="flex-1">
-          <h1 className="text-4xl font-bold text-blue-600 mb-4">{product.name}</h1>
-          <p className="text-2xl text-gray-900 font-semibold mb-4">${product.price}</p>
-          <p className="text-gray-700 mb-6">{product.description}</p>
-          <p className="text-gray-600 mb-2">Brand: {product.brand}</p>
-          <p className="text-gray-600 mb-2">Category: {product.category}</p>
-          <p className="text-gray-600 mb-2">Available Stock: {product.stock}</p>
-          <p className="text-yellow-500 mb-6">Rating: {product.rating} ⭐ ({product.reviews} reviews)</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="border p-4 rounded-md flex flex-col items-center bg-white shadow-md">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={300}
+              height={200}
+              className="rounded-md mb-4"
+            />
+            <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+            <p className="text-blue-600 font-bold mb-2">${product.price}</p>
+            <p className="text-gray-700 mb-4">{product.description}</p>
 
-          {/* Add to Cart Button */}
-          <button className="bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition mb-6">
-            Add to Cart
-          </button>
-
-          {/* Back to Products Link */}
-          <Link href="/products" className="text-blue-600 hover:underline">
-            &larr; Back to Products
-          </Link>
-        </div>
+            {/* Link to Product Detail Page */}
+            <Link href={`/products/${product.id}`}>
+              <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
+                View Product
+              </button>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );

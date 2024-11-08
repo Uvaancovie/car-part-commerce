@@ -18,8 +18,12 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".", // Set baseUrl to the project root
     "paths": {
-      "@/*": ["./*"]
+      "@/components/*": ["components/*"], // Example for components folder
+      "@/data/*": ["data/*"],             // For accessing data folder easily
+      "@/styles/*": ["styles/*"],         // For accessing styles
+      "@/*": ["./*"]                      // Root-level imports as fallback
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

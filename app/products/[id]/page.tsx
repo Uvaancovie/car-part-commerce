@@ -4,12 +4,22 @@ import products from "@/data/products.json";
 import Image from "next/image";
 import Link from "next/link";
 
-type Params = { id: string };
+// This function statically generates routes for each product at build time
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id.toString(),
+  }));
+}
 
-export default function ProductDetailPage({ params }: { params: Params }) {
-  // Explicitly cast params to remove any Promise-related type inference
-  const product = products.find((p) => p.id === parseInt((params as Params).id, 10));
+type ProductDetailPageProps = {
+  params: { id: string };
+};
 
+export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+  // Fetch product data based on params.id
+  const product = products.find((p) => p.id === parseInt(params.id, 10));
+
+  // If the product is not found, return a 404 page
   if (!product) return notFound();
 
   return (

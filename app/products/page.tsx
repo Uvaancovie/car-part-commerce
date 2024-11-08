@@ -1,99 +1,48 @@
-// app/products/page.tsx
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
+// app/products/[id]/page.tsx
+import { notFound } from "next/navigation";
+import products from "../../data/products.json" // Ensure this path is correct
 import Image from "next/image";
-import products from "../../data/products.json";
+import Link from "next/link";
 
-export default function ProductsPage() {
-  // State for search input and filters
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [brandFilter, setBrandFilter] = useState("");
+export default function ProductDetailPage({ params }: { params: { id: string } }) {
+  // Convert `params.id` to a number to match the ID in `products.json`
+  const product = products.find((p) => p.id === parseInt(params.id, 10));
 
-  // Unique categories and brands for filters
-  const categories = [...new Set(products.map((product) => product.category))];
-  const brands = [...new Set(products.map((product) => product.brand))];
-
-  // Filtered products based on search, category, and brand
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter ? product.category === categoryFilter : true;
-    const matchesBrand = brandFilter ? product.brand === brandFilter : true;
-    return matchesSearch && matchesCategory && matchesBrand;
-  });
+  // If the product is not found, render a 404 page
+  if (!product) return notFound();
 
   return (
-    <div className="max-w-7xl mx-auto py-16 px-6">
-      <h2 className="text-4xl font-bold text-blue-600 text-center mb-8">Our Products</h2>
-
-      {/* Search and Filter Section */}
-      <div className="flex flex-col md:flex-row md:space-x-6 mb-8">
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-3 border rounded-md w-full md:w-1/3 mb-4 md:mb-0"
+    <div className="max-w-4xl mx-auto py-16 px-6">
+      <div className="flex flex-col md:flex-row md:space-x-6">
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={400}
+          height={300}
+          className="w-full h-auto mb-6 rounded-md"
         />
-        
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="p-3 border rounded-md w-full md:w-1/3 mb-4 md:mb-0"
-        >
-          <option value="">All Categories</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
 
-        <select
-          value={brandFilter}
-          onChange={(e) => setBrandFilter(e.target.value)}
-          className="p-3 border rounded-md w-full md:w-1/3"
-        >
-          <option value="">All Brands</option>
-          {brands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
-            </option>
-          ))}
-        </select>
+        {/* Product Details */}
+        <div className="flex-1">
+          <h1 className="text-4xl font-bold text-blue-600 mb-4">{product.name}</h1>
+          <p className="text-2xl text-gray-900 font-semibold mb-4">${product.price}</p>
+          <p className="text-gray-700 mb-6">{product.description}</p>
+          <p className="text-gray-600 mb-2">Brand: {product.brand}</p>
+          <p className="text-gray-600 mb-2">Category: {product.category}</p>
+          <p className="text-gray-600 mb-2">Available Stock: {product.stock}</p>
+          <p className="text-yellow-500 mb-6">Rating: {product.rating} ⭐ ({product.reviews} reviews)</p>
+
+          {/* Add to Cart Button */}
+          <button className="bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition mb-6">
+            Add to Cart
+          </button>
+
+          {/* Back to Products Link */}
+          <Link href="/products" className="text-blue-600 hover:underline">
+            &larr; Back to Products
+          </Link>
+        </div>
       </div>
-
-      {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="border p-4 rounded-md flex flex-col items-center bg-white shadow-md">
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={300}
-              height={200}
-              className="rounded-md mb-4"
-            />
-            <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-            <p className="text-blue-600 font-bold mb-2">${product.price}</p>
-            <p className="text-gray-700 mb-4">{product.description}</p>
-
-            {/* View Product Button */}
-            <Link href={`/products/${product.id}`}>
-              <button className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition">
-                View Product
-              </button>
-            </Link>
-          </div>
-        ))}
-      </div>
-
-      {/* No Results Found */}
-      {filteredProducts.length === 0 && (
-        <p className="text-center text-gray-700 mt-8">No products found matching your criteria.</p>
-      )}
     </div>
   );
 }

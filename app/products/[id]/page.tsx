@@ -1,14 +1,14 @@
 // app/products/[id]/page.tsx
 import { notFound } from "next/navigation";
-import products from "../../../data/products.json";
+import products from "../../../data/products.json"; // Adjust path to products.json
 import Image from "next/image";
 import Link from "next/link";
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  // Convert `params.id` to a number to match product IDs in JSON
+  // Convert `params.id` to a number to match JSON data structure
   const product = products.find((p) => p.id === Number(params.id));
 
-  // If the product is not found, render a 404 page
+  // If the product is not found, return a 404 page
   if (!product) return notFound();
 
   return (

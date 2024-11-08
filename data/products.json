@@ -1,0 +1,39 @@
+[
+    {
+      "id": 1,
+      "name": "Chrysler Engine",
+      "description": "High-performance engine for Chrysler vehicles.",
+      "price": 500,
+      "category": "Engine",
+      "brand": "Chrysler",
+      "image": "/images/chrysler-engine.jpg",
+      "stock": 10,
+      "rating": 4.5,
+      "reviews": 15
+    },
+    {
+      "id": 2,
+      "name": "Jeep Transmission",
+      "description": "Durable transmission designed for Jeep models.",
+      "price": 700,
+      "category": "Transmission",
+      "brand": "Jeep",
+      "image": "/images/jeep-transmission.jpg",
+      "stock": 5,
+      "rating": 4.7,
+      "reviews": 22
+    },
+    {
+      "id": 3,
+      "name": "Dodge Brake Pads",
+      "description": "High-quality brake pads suitable for Dodge cars.",
+      "price": 150,
+      "category": "Brakes",
+      "brand": "Dodge",
+      "image": "/images/dodge-brake-pads.jpg",
+      "stock": 20,
+      "rating": 4.3,
+      "reviews": 30
+    }
+  ]
+  

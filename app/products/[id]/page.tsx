@@ -4,13 +4,9 @@ import products from "@/data/products.json";
 import Image from "next/image";
 import Link from "next/link";
 
-// Make the component async to await `params`
-export default async function ProductDetailPage({ params }: { params: { id: string } }) {
-  // Wait for params to ensure it’s available
-  const { id } = await params;
-
-  // Convert `id` to a number and find the product in `products.json`
-  const product = products.find((p) => p.id === parseInt(id, 10));
+export default function ProductDetailPage({ params }: { params: { id: string } }) {
+  // Access `params.id` directly without async or await
+  const product = products.find((p) => p.id === parseInt(params.id, 10));
 
   // If the product is not found, render a 404 page
   if (!product) return notFound();
